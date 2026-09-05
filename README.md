@@ -1,47 +1,54 @@
 # WetterOnline Card
 
-Eine Lovelace-Karte für Home Assistant, die aktuelles Wetter und Stundenvorhersage
-von [wetteronline.de](https://www.wetteronline.de) anzeigt — ohne Werbung,
-ohne Cookie-Banner und ohne iframe.
+*English · [Deutsch](README_de.md)*
 
-Die Karte holt ihre Daten direkt im Browser und braucht daher **keine Integration,
-keine Entität und keinen REST-Sensor** in Home Assistant.
+A Lovelace card for Home Assistant showing current conditions and an hourly
+forecast from [wetteronline.de](https://www.wetteronline.de) — without ads,
+without a cookie banner and without an iframe.
 
-## Was die Karte zeigt
+The card fetches its data directly in the browser and therefore needs **no
+integration, no entity and no REST sensor** in Home Assistant.
 
-- Aktuelle Temperatur, Ort, Region und Zeitstempel
-- Sonnenauf- und -untergang
-- Aktuelle Windgeschwindigkeit
-- Stundenvorhersage mit Wettersymbol, Temperatur und Regenwahrscheinlichkeit
-- Tages-Zusammenfassung als Textbanner
-  (z. B. *„Heute scheint zeitweise die Sonne, aber später weht ein böig auffrischender Wind."*)
+> **Coverage:** WetterOnline is a German weather service covering Germany,
+> Austria and Switzerland in detail. The card's own labels are in German
+> (`Wetter <place>`, `aktuell`, abbreviated weekday names), as is the daily
+> summary text supplied by the API.
 
-Hintergrund und Symbole passen sich an Bewölkung und Tageszeit an — nachts wird
-aus der Sonne ein Mond.
+## What the card shows
+
+- Current temperature, place, region and timestamp
+- Sunrise and sunset
+- Current wind speed
+- Hourly forecast with weather symbol, temperature and chance of rain
+- A daily summary banner
+  (e.g. *„Heute scheint zeitweise die Sonne, aber später weht ein böig auffrischender Wind."*)
+
+Background and symbols adapt to cloud cover and time of day — at night the sun
+becomes a moon.
 
 ## Installation
 
-### HACS (empfohlen)
+### HACS (recommended)
 
-1. In HACS auf **⋮ → Benutzerdefinierte Repositories**
-2. Repository `ma-world/wetteronline-card` hinzufügen, Kategorie **Dashboard**
-3. **WetterOnline Card** herunterladen
-4. Browser hart neu laden (`Strg`/`Cmd` + `Shift` + `R`)
+1. In HACS, open **⋮ → Custom repositories**
+2. Add the repository `ma-world/wetteronline-card`, category **Dashboard**
+3. Download **WetterOnline Card**
+4. Hard-reload your browser (`Ctrl`/`Cmd` + `Shift` + `R`)
 
-### Manuell
+### Manual
 
-1. `wetteronline-card.js` nach `config/www/` kopieren
-2. In Home Assistant unter **Einstellungen → Dashboards → ⋮ → Ressourcen**
-   eine neue Ressource anlegen:
+1. Copy `wetteronline-card.js` into `config/www/`
+2. In Home Assistant go to **Settings → Dashboards → ⋮ → Resources** and add a
+   new resource:
    - URL: `/local/wetteronline-card.js`
-   - Typ: **JavaScript-Modul**
-3. Browser hart neu laden
+   - Type: **JavaScript module**
+3. Hard-reload your browser
 
-## Konfiguration
+## Configuration
 
 ```yaml
 type: custom:wetteronline-card
-api_key: "DEIN_KEY"
+api_key: "YOUR_KEY"
 location_id: a6571
 latitude: 50.08125
 longitude: 8.51625
@@ -53,56 +60,56 @@ hours: 7
 update_interval: 600
 ```
 
-`api_key` und `location_id` musst du selbst ermitteln — wie das geht, steht im
-nächsten Abschnitt. Ohne `api_key` antwortet die API mit `403`.
+You have to obtain `api_key` and `location_id` yourself — see the next section
+for how. Without `api_key` the API responds with `403`.
 
-| Option            | Typ     | Standard | Beschreibung |
-|-------------------|---------|----------|--------------|
-| `api_key`         | string  | —        | **Pflicht.** Client-Schlüssel für die WetterOnline-API (siehe unten) |
-| `location_id`     | string  | —        | **Pflicht.** Ortskennung von WetterOnline (siehe unten) |
-| `latitude`        | number  | —        | Breitengrad des Ortes |
-| `longitude`       | number  | —        | Längengrad des Ortes |
-| `grid_latitude`   | string  | `latitude`  | Breitengrad des Vorhersagerasters |
-| `grid_longitude`  | string  | `longitude` | Längengrad des Vorhersagerasters |
-| `altitude`        | number  | `100`    | Höhe über NN in Metern |
-| `name`            | string  | —        | Ortsname in der Überschrift („Wetter …") |
-| `region`          | string  | —        | Text oben links, z. B. Bundesland |
-| `hours`           | number  | `7`      | Anzahl der Stunden im Vorhersagestreifen |
-| `show_sun`        | boolean | `true`   | Sonnenauf-/untergang anzeigen |
-| `show_text`       | boolean | `true`   | Tages-Textbanner anzeigen |
-| `update_interval` | number  | `600`    | Sekunden zwischen zwei API-Abrufen, Minimum 60 |
+| Option            | Type    | Default     | Description |
+|-------------------|---------|-------------|-------------|
+| `api_key`         | string  | —           | **Required.** Client key for the WetterOnline API (see below) |
+| `location_id`     | string  | —           | **Required.** WetterOnline location identifier (see below) |
+| `latitude`        | number  | —           | Latitude of the place |
+| `longitude`       | number  | —           | Longitude of the place |
+| `grid_latitude`   | string  | `latitude`  | Latitude of the forecast grid point |
+| `grid_longitude`  | string  | `longitude` | Longitude of the forecast grid point |
+| `altitude`        | number  | `100`       | Elevation in metres |
+| `name`            | string  | —           | Place name in the heading (`Wetter …`) |
+| `region`          | string  | —           | Text in the top left, e.g. the state |
+| `hours`           | number  | `7`         | Number of hours in the forecast strip |
+| `show_sun`        | boolean | `true`      | Show sunrise and sunset |
+| `show_text`       | boolean | `true`      | Show the daily summary banner |
+| `update_interval` | number  | `600`       | Seconds between API requests, minimum 60 |
 
-### Hinweis zum Aktualisierungsintervall
+### About the update interval
 
-Die Daten werden einmal beim Öffnen der Ansicht geholt und danach im Takt von
-`update_interval`. Verlässt du die Ansicht, stoppen die Timer; beim Zurückwechseln
-wird sofort neu geladen. Die Uhrzeit im Kartenkopf aktualisiert sich alle 30
-Sekunden, das kostet keinen zusätzlichen Abruf.
+Data is fetched once when the view opens and then on the `update_interval`
+schedule. Leaving the view stops the timers; returning to it reloads immediately.
+The clock in the card header refreshes every 30 seconds, which costs no
+additional request.
 
-Werte unter 60 Sekunden werden auf 60 angehoben. Das Abrufen passiert in **jedem**
-Browser, der das Dashboard offen hat — ein sehr kurzes Intervall vervielfacht sich
-also über alle Geräte.
+Values below 60 seconds are raised to 60. Fetching happens in **every** browser
+that has the dashboard open, so a very short interval multiplies across all your
+devices.
 
-## Zugangsdaten ermitteln
+## Obtaining the credentials
 
-Dieses Repository enthält **bewusst keinen API-Key**. Du liest ihn dir selbst aus
-der WetterOnline-Website aus — zusammen mit den Koordinaten deines Ortes liefert
-das folgende Snippet dir den kompletten, fertigen YAML-Block.
+This repository deliberately ships **no API key**. You read it out of the
+WetterOnline website yourself — together with your location's coordinates, the
+snippet below hands you the complete, ready-to-paste YAML block.
 
-1. Öffne [wetteronline.de](https://www.wetteronline.de), suche deinen Ort und
-   öffne dessen Wetterseite (URL sieht aus wie
+1. Open [wetteronline.de](https://www.wetteronline.de), search for your location
+   and open its weather page (the URL looks like
    `wetteronline.de/wetter/frankfurt-am-main/sindlingen`)
-2. Bestätige den Cookie-Dialog — sonst lädt die Seite nicht vollständig
-3. Öffne die Entwicklerkonsole (`F12`, Reiter **Konsole**)
-4. Füge dieses Snippet ein und drücke Enter:
+2. Accept the cookie dialog — otherwise the page does not load fully
+3. Open the developer console (`F12`, **Console** tab)
+4. Paste this snippet and press Enter:
 
 ```js
 (() => {
   const el = document.getElementById('ng-state');
-  if (!el) return console.error('Kein ng-state gefunden – bist du auf einer Ortsseite?');
+  if (!el) return console.error('No ng-state found - are you on a location page?');
   const st = JSON.parse(el.textContent);
   const key = Object.keys(st).find(k => k.includes('shortcast'));
-  if (!key) return console.error('Kein shortcast-Eintrag gefunden.');
+  if (!key) return console.error('No shortcast entry found.');
   const p = new URL(key).searchParams;
   console.log(
 `type: custom:wetteronline-card
@@ -112,54 +119,54 @@ latitude: ${p.get('latitude')}
 longitude: ${p.get('longitude')}
 grid_latitude: "${p.get('grid_latitude')}"
 grid_longitude: "${p.get('grid_longitude')}"
-name: DEIN_ORT
-region: DEINE_REGION
+name: YOUR_PLACE
+region: YOUR_REGION
 hours: 7
 update_interval: 600`);
 })();
 ```
 
-5. Kopiere die ausgegebenen Zeilen in deine Kartenkonfiguration und passe `name`
-   und `region` an.
+5. Copy the printed lines into your card configuration and adjust `name` and
+   `region`.
 
-### Manuelle Alternative
+### Manual alternative
 
-Falls das Snippet nichts findet — WetterOnline ändert gelegentlich den Seitenaufbau:
+If the snippet finds nothing — WetterOnline changes its page structure
+occasionally:
 
-- **API-Key:** Entwicklertools öffnen, Reiter **Netzwerk**, Seite neu laden und
-  nach einer Anfrage an `api-web.wo-cloud.com` suchen. In deren URL steht der
-  Parameter `c=…` — genau dieser Wert ist der `api_key`. Er ist für alle Orte
-  identisch und ändert sich nur selten.
-- **location_id:** Seitenquelltext anzeigen (`Strg`/`Cmd` + `U`) und nach
-  `forecastKey` suchen. Der Wert dahinter — z. B. `"forecastKey":"a6571"` — ist
-  die `location_id`. Die Rasterkoordinaten stehen in der Nähe unter `nowcastKey`.
+- **API key:** Open the developer tools, go to the **Network** tab, reload the
+  page and look for a request to `api-web.wo-cloud.com`. Its URL contains a
+  `c=…` parameter — that value is the `api_key`. It is the same for every
+  location and changes only rarely.
+- **location_id:** View the page source (`Ctrl`/`Cmd` + `U`) and search for
+  `forecastKey`. The value after it — e.g. `"forecastKey":"a6571"` — is the
+  `location_id`. The grid coordinates are nearby under `nowcastKey`.
 
-Wenn die Karte plötzlich nicht mehr lädt, ist meistens der `api_key` erneuert
-worden — dann einfach die Schritte oben wiederholen.
+If the card suddenly stops loading, the `api_key` has usually been rotated —
+just repeat the steps above.
 
-## Wichtiger Hinweis
+## Important notice
 
-Diese Karte nutzt **inoffizielle, undokumentierte Endpunkte** von WetterOnline —
-dieselben, die deren eigene Website im Browser aufruft. Deshalb liegt hier auch
-kein Schlüssel bei: Jede Nutzerin und jeder Nutzer ermittelt ihn selbst für die
-eigene, private Verwendung.
+This card uses **unofficial, undocumented endpoints** of WetterOnline — the same
+ones their own website calls in the browser. That is why no key is included here:
+every user obtains their own, for their own private use.
 
-Daraus folgt:
+Consequently:
 
-- Die Endpunkte und der Schlüssel können sich **jederzeit ohne Ankündigung ändern**,
-  dann funktioniert die Karte nicht mehr, bis die Konfiguration angepasst wird.
-- Es gibt **keine Zusicherung** von WetterOnline, dass diese Nutzung erlaubt ist.
-  Dies ist ein privates Hobbyprojekt ohne jede Verbindung zur WetterOnline GmbH.
-- Nutzung auf eigenes Risiko. Halte das `update_interval` großzügig und erzeuge
-  keine unnötige Last.
+- The endpoints and the key can **change at any time without notice**, and the
+  card will stop working until the configuration is updated.
+- There is **no assurance** from WetterOnline that this use is permitted. This is
+  a private hobby project with no connection to WetterOnline GmbH.
+- Use at your own risk. Keep `update_interval` generous and do not create
+  unnecessary load.
 
-Wer eine offiziell unterstützte Lösung braucht, ist mit einer der eingebauten
-Wetter-Integrationen von Home Assistant (Met.no, DWD, OpenWeatherMap …) und der
-nativen `weather-forecast`-Karte besser bedient.
+If you need an officially supported solution, you are better served by one of
+Home Assistant's built-in weather integrations (Met.no, DWD, OpenWeatherMap, …)
+together with the native `weather-forecast` card.
 
-*WetterOnline ist eine Marke der WetterOnline GmbH. Dieses Projekt steht in keiner
-Verbindung zu ihr und wird von ihr weder unterstützt noch geprüft.*
+*WetterOnline is a trademark of WetterOnline GmbH. This project is not affiliated
+with, endorsed by, or reviewed by them.*
 
-## Lizenz
+## License
 
-MIT — siehe [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
