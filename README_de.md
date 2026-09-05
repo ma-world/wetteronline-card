@@ -9,6 +9,13 @@ ohne Cookie-Banner und ohne iframe.
 Die Karte holt ihre Daten direkt im Browser und braucht daher **keine Integration,
 keine Entität und keinen REST-Sensor** in Home Assistant.
 
+| Breit (7 Stunden) | Schmal (5 Stunden) |
+|:--:|:--:|
+| <img src="images/screenshot-desktop.png" alt="Karte über die volle Spaltenbreite" width="430"> | <img src="images/screenshot-narrow.png" alt="Karte in einer schmalen Spalte" width="300"> |
+
+Die Karte passt sich der Breite ihrer Dashboard-Spalte an; über `hours` steuerst
+du, wie viele Stunden der Vorhersagestreifen zeigt.
+
 ## Was die Karte zeigt
 
 - Aktuelle Temperatur, Ort, Region und Zeitstempel

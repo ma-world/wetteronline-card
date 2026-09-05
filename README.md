@@ -14,6 +14,13 @@ integration, no entity and no REST sensor** in Home Assistant.
 > (`Wetter <place>`, `aktuell`, abbreviated weekday names), as is the daily
 > summary text supplied by the API.
 
+| Wide (7 hours) | Narrow (5 hours) |
+|:--:|:--:|
+| <img src="images/screenshot-desktop.png" alt="Card at full section width" width="430"> | <img src="images/screenshot-narrow.png" alt="Card in a narrow column" width="300"> |
+
+The card adapts to the width of its dashboard column; use `hours` to control how
+many hours the forecast strip shows.
+
 ## What the card shows
 
 - Current temperature, place, region and timestamp

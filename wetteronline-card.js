@@ -1,4 +1,4 @@
-const CARD_VERSION = "1.0.0";
+const CARD_VERSION = "1.0.1";
 
 const WO_BASE = "https://api-web.wo-cloud.com";
 
@@ -175,7 +175,9 @@ class WetterOnlineCard extends HTMLElement {
     };
     this._data = null;
     this._error = null;
-    this.attachShadow({ mode: "open" });
+    // The card editor calls setConfig repeatedly on the same element for its
+    // live preview, so the shadow root must only ever be attached once.
+    if (!this.shadowRoot) this.attachShadow({ mode: "open" });
   }
 
   get _intervalMs() {
