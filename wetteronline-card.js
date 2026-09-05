@@ -1,3 +1,5 @@
+const CARD_VERSION = "1.0.0";
+
 const WO_BASE = "https://api-web.wo-cloud.com";
 
 const DAYS = ["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."];
@@ -401,6 +403,13 @@ class WetterOnlineCard extends HTMLElement {
 }
 
 customElements.define("wetteronline-card", WetterOnlineCard);
+
+console.info(
+  `%c WETTERONLINE-CARD %c v${CARD_VERSION} `,
+  "color:#fff;background:#5b7fa3;font-weight:700;border-radius:3px 0 0 3px",
+  "color:#5b7fa3;background:#e8eef5;font-weight:700;border-radius:0 3px 3px 0"
+);
+
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: "wetteronline-card",
