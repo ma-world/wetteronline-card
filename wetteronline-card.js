@@ -1,4 +1,4 @@
-const CARD_VERSION = "1.0.1";
+const CARD_VERSION = "1.0.2";
 
 const WO_BASE = "https://api-web.wo-cloud.com";
 

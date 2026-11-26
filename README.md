@@ -176,4 +176,7 @@ with, endorsed by, or reviewed by them.*
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[PolyForm Noncommercial 1.0.0](LICENSE) – free for noncommercial use.
+Commercial use requires prior written permission; please ask via a GitHub issue.
+
+Versions previously released under the MIT License remain available under MIT.

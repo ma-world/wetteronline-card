@@ -171,4 +171,7 @@ Verbindung zu ihr und wird von ihr weder unterstützt noch geprüft.*
 
 ## Lizenz
 
-MIT — siehe [LICENSE](LICENSE).
+[PolyForm Noncommercial 1.0.0](LICENSE) – kostenlos für nicht-kommerzielle Nutzung.
+Kommerzielle Nutzung nur mit vorheriger schriftlicher Genehmigung; Anfragen bitte über ein GitHub-Issue.
+
+Bereits unter der MIT-Lizenz veröffentlichte Versionen bleiben unter MIT verfügbar.
